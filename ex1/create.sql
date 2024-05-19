@@ -6,7 +6,13 @@ create table Movie(
   release_year integer,
   content_rating varchar(100),
   imdb_rating float,
-  imdb_votes integer
+  imdb_votes integer,
+  production_company varchar(100),
+  foreign key(production_company) references ProductionCompany(company_name)
+);
+
+create table ProductionCompany(
+  company_name varchar(100) primary key
 );
 
 create table Director(
