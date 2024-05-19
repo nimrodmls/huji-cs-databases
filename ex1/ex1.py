@@ -3,9 +3,9 @@ from io import TextIOWrapper
 from zipfile import ZipFile
 
 # Mapping between the table names to their respective columns
-TABLE_NAMES = {'Movie': ['Film ID', 'Film', 'Movie Time', 'Movie Genre', 'Year of Release', 
+TABLE_NAMES = {'ProductionCompany': ['Film Studio/Producer(s)'], 
+               'Movie': ['Film ID', 'Film', 'Movie Time', 'Movie Genre', 'Year of Release', 
                          'Content Rating', 'IMDB Rating', 'IMDB Votes', 'Film Studio/Producer(s)'], 
-               'ProductionCompany': ['Film Studio/Producer(s)'], 
                'Director': ['Director'], 
                'DirectedBy': ['Film ID', 'Director'],
                'Actor': ['Actor'], 
