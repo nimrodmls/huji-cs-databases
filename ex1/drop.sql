@@ -1,4 +1,4 @@
-drop table Movies;
+drop table Movie;
 drop table ProductionCompany;
 drop table Director;
 drop table DirectedBy;
