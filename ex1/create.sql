@@ -1,3 +1,7 @@
+create table ProductionCompany(
+  company_name varchar(100) primary key
+);
+
 create table Movie(
   filmId varchar(100) primary key,
   film_name varchar not null,
@@ -9,10 +13,6 @@ create table Movie(
   imdb_votes integer,
   production_company varchar(100),
   foreign key(production_company) references ProductionCompany(company_name)
-);
-
-create table ProductionCompany(
-  company_name varchar(100) primary key
 );
 
 create table Director(

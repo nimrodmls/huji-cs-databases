@@ -9,7 +9,7 @@ TABLE_NAMES = {'Movie': ['Film ID', 'Film', 'Movie Time', 'Movie Genre', 'Year o
                'Director': ['Director'], 
                'DirectedBy': ['Film ID', 'Director'],
                'Actor': ['Actor'], 
-               'ActedBy': ['Film ID', 'Actor'],
+               'ActedIn': ['Film ID', 'Actor'],
                'Author': ['Author'],
                'AuthoredBy': ['Film ID', 'Author'],
                'BestPictureAward': ['Oscar Year', 'Film ID'],
@@ -39,7 +39,7 @@ def process_movie_table(row_data, writer):
     return movie_id
 
 # process_file goes over all rows in original csv file, and sends each row to process_row()
-def process_file(outfile):
+def process_file():
     csv_files = [open(f"{name}.csv", 'w' , encoding='UTF8',newline='') for name in get_names()]
     writers = {name: init_csv_writer(file, TABLE_NAMES[name])
                for name, file in zip(get_names(), csv_files)}
@@ -74,24 +74,33 @@ def process_file(outfile):
                     writers['ProductionCompany'].writerow([production_company])
 
                 # Building the Director and DirectedBy table
-                movie_directors = split_list_value(row_data['Director'])
+                movie_directors = split_list_value(row_data['Directors'])
                 for director in movie_directors:
+                    if director == '': # Sometimes there can be no director
+                        continue
+
                     writers['DirectedBy'].writerow([movie_id, director])
                     if director not in directors:
                         directors.add(director)
                         writers['Director'].writerow([director])
 
                 # Building the Actor and ActedBy tables
-                movie_actors = split_list_value(row_data['Actor'])
+                movie_actors = split_list_value(row_data['Actors'])
                 for actor in movie_actors:
-                    writers['ActedBy'].writerow([movie_id, actor])
+                    if actor == '': # Sometimes there can be no actors
+                        continue
+                    
+                    writers['ActedIn'].writerow([movie_id, actor])
                     if actor not in actors:
                         actors.add(actor)
                         writers['Actor'].writerow([actor])
 
                 # Building the Author and AuthoredBy tables
-                movie_authors = split_list_value(row_data['Author'])
+                movie_authors = split_list_value(row_data['Authors'])
                 for author in movie_authors:
+                    if author == '': # Sometimes there can be no authors
+                        continue
+
                     writers['AuthoredBy'].writerow([movie_id, author])
                     if author not in authors:
                         authors.add(author)
@@ -112,14 +121,13 @@ def get_names():
     return TABLE_NAMES.keys()
 
 def split_list_value(list_value):
-    return list_value.split("&&")
+    return set([value.strip() for value in list_value.split("&&")])
 	
 def main():
     """
     """
     # opens file.
-    with open("oscars.csv", 'w' , encoding='UTF8',newline='') as oscars_outfile:
-        process_file(oscars_outfile)
+    process_file()
 
 if __name__ == "__main__":
     main()
