@@ -4,7 +4,7 @@ from zipfile import ZipFile
 
 # Mapping between the table names to their respective columns
 TABLE_NAMES = {'ProductionCompany': ['Film Studio/Producer(s)'], 
-               'Movie': ['Film ID', 'Film', 'Movie Time', 'Movie Genre', 'Year of Release', 
+               'Movie': ['Film ID', 'Film', 'Movie Time', 'Year of Release', 
                          'Content Rating', 'IMDB Rating', 'IMDB Votes', 'Film Studio/Producer(s)'], 
                'Director': ['Director'], 
                'DirectedBy': ['Film ID', 'Director'],
@@ -12,6 +12,8 @@ TABLE_NAMES = {'ProductionCompany': ['Film Studio/Producer(s)'],
                'ActedIn': ['Film ID', 'Actor'],
                'Author': ['Author'],
                'AuthoredBy': ['Film ID', 'Author'],
+               'Genres': ['Movie Genre'],
+               'MovieGenre': ['Film ID', 'Movie Genre'],
                'BestPictureAward': ['Oscar Year', 'Film ID'],
                'BestPictureNominee': ['Oscar Year', 'Film ID']}
 
@@ -29,7 +31,6 @@ def process_movie_table(row_data, writer):
     movie_row = [row_data['Film ID'], 
                  row_data['Film'], 
                  row_data['Movie Time'], 
-                 row_data['Movie Genre'], 
                  row_data['Year of Release'], 
                  row_data['Content Rating'], 
                  row_data['IMDB Rating'], 
@@ -50,6 +51,7 @@ def process_file():
     directors = set()
     actors = set()
     authors = set()
+    genres = set()
 
     with ZipFile('oscars.zip') as zf:
         with zf.open('oscars.csv', 'r') as infile:
@@ -105,6 +107,17 @@ def process_file():
                     if author not in authors:
                         authors.add(author)
                         writers['Author'].writerow([author])
+
+                # Building the MovieGenre table
+                movie_genres = split_list_value(row_data['Movie Genre'])
+                for genre in movie_genres:
+                    if genre == '': # Sometimes there can be no genres
+                        continue
+
+                    writers['MovieGenre'].writerow([movie_id, genre])
+                    if genre not in genres:
+                        genres.add(genre)
+                        writers['Genres'].writerow([genre])
 
                 # Building the BestPictureAward and BestPictureNominee tables
                 if 'Winner' == row_data['Award']:

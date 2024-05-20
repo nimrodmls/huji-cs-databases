@@ -5,12 +5,11 @@ create table ProductionCompany(
 create table Movie(
   filmId varchar(100) primary key,
   film_name varchar not null,
-  duration integer,
-  genre varchar(100),
-  release_year integer,
+  duration integer check(duration > 0),
+  release_year integer check(release_year > 0),
   content_rating varchar(100),
-  imdb_rating float,
-  imdb_votes integer,
+  imdb_rating float check(imdb_rating >= 0 and imdb_rating <= 10),
+  imdb_votes integer check(imdb_votes >= 0),
   production_company varchar(100),
   foreign key(production_company) references ProductionCompany(company_name)
 );
@@ -49,6 +48,18 @@ create table AuthoredBy(
   primary key(filmId, author_name),
   foreign key(filmId) references movie(filmId),
   foreign key(author_name) references author(author_name)
+);
+
+create table Genres(
+  genre varchar(100) primary key
+);
+
+create table MovieGenre(
+  filmId varchar(100),
+  genre varchar(100),
+  primary key(filmId, genre),
+  foreign key(filmId) references movie(filmId),
+  foreign key(genre) references genres(genre)
 );
 
 create table BestPictureAward(

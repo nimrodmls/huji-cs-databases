@@ -1,5 +1,7 @@
 drop table BestPictureAward;
 drop table BestPictureNominee;
+drop table MovieGenre;
+drop table Genres;
 drop table DirectedBy;
 drop table Director;
 drop table ActedIn;
