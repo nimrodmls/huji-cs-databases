@@ -7,7 +7,7 @@ create table Movie(
   film_name varchar not null,
   duration integer check(duration > 0),
   release_year integer check(release_year > 0),
-  content_rating varchar(100),
+  content_rating varchar(100) check(Content_rating in ('NR', 'R','G', 'PG-13', 'PG')),
   imdb_rating float check(imdb_rating >= 0 and imdb_rating <= 10),
   imdb_votes integer check(imdb_votes >= 0),
   production_company varchar(100),
