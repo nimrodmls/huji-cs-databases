@@ -1,0 +1,12 @@
+drop table BestPictureAward;
+drop table BestPictureNominee;
+drop table MovieGenre;
+drop table Genres;
+drop table DirectedBy;
+drop table Director;
+drop table ActedIn;
+drop table Actor;
+drop table AuthoredBy;
+drop table Author;
+drop table Movie;
+drop table ProductionCompany;
