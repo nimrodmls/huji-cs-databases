@@ -1,7 +1,11 @@
-SELECT DISTINCT A1.name
-FROM authors A1
-WHERE EXISTS (
-    SELECT * 
-    FROM authors A2 NATURAL JOIN conferences C
-    WHERE A1.conference = C.conference AND A1.year = A2.year AND A1.name = 'Omri Abend')
-ORDER BY A1.name ASC;
+SELECT DISTINCT A.name
+FROM authors A
+WHERE NOT EXISTS (
+    SELECT DISTINCT A1.year, A1.conference
+    FROM authors A1
+    WHERE A1.name = 'Omri Abend'
+    EXCEPT
+    SELECT DISTINCT A2.year, A2.conference
+    FROM authors A2
+    WHERE A2.name = A.name)
+ORDER BY A.name ASC;
