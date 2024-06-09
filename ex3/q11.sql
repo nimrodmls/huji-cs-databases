@@ -14,4 +14,5 @@ WHERE NOT EXISTS (
     WHERE A1.name = A.name
     EXCEPT
     SELECT Y.conference
-    FROM youngconferences Y);
+    FROM youngconferences Y)
+ORDER BY A.name ASC;
