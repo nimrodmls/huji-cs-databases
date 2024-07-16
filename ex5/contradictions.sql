@@ -1,4 +1,4 @@
-SELECT DISTINCT TransactionNo, ProductNo
+SELECT DISTINCT S1.TransactionNo AS TransactionNo, S1.ProductNo AS ProductNo
 FROM sales S1, sales S2
 WHERE 
     (S1.TransactionNo = S2.TransactionNo AND S1.CustomerNo <> S2.CustomerNo) OR
